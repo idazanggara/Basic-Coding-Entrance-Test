@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Ujian Online - 1 Jam</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    #timer-container {
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      color: #d32f2f;
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #fff3e0;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    #form-container {
+      margin-top: 20px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .message {
+      text-align: center;
+      font-size: 24px;
+      color: #d32f2f;
+      padding: 20px;
+      background-color: #ffebee;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Basic Coding Entrance Test By Lumoshive Academy</h1>
+
+  <div id="timer-container">
+    ⏳ Waktu tersisa: <span id="timer">60:00</span>
+  </div>
+
+  <div id="form-container">
+    <!-- Ganti dengan link embed Google Form kamu -->
+    <iframe
+      src="https://docs.google.com/forms/d/e/1FAIpQLSf1tqUHm3XsFzcZP9UmZjrrQ-HIRrx39ZaFrzSTy8tMrB10_g/viewform?embedded=true"
+      width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    <!-- <iframe src=""
+            width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">
+      Memuat formulir…
+    </iframe> -->
+  </div>
+
+  <div id="message" class="message hidden">
+    ⚠️ Waktu habis! Form telah ditutup.
+  </div>
+
+  <script>
+    // === ATUR DURASI WAKTU (dalam menit) ===
+    const totalMinutes = 10 // 1 jam
+
+    // === Cek apakah sudah pernah mulai ujian ===
+    const startTimeKey = 'exam_start_time'
+    let startTime = localStorage.getItem(startTimeKey)
+
+    if (!startTime) {
+      // Jika belum pernah mulai, catat waktu sekarang
+      startTime = new Date().getTime()
+      localStorage.setItem(startTimeKey, startTime)
+    } else {
+      // Jika sudah pernah mulai, pakai waktu itu
+      startTime = parseInt(startTime)
+    }
+
+    // Hitung waktu habis
+    const endTime = startTime + (totalMinutes * 60 * 1000)
+
+    // Fungsi hitung mundur
+    function updateTimer() {
+      const now = new Date().getTime()
+      const timeLeft = endTime - now
+
+      if (timeLeft <= 0) {
+        // Waktu habis
+        document.getElementById('timer').textContent = "Waktu Habis!"
+        document.getElementById('form-container').classList.add('hidden')
+        document.getElementById('message').classList.remove('hidden')
+
+        // (Opsional) Redirect ke halaman lain
+        // setTimeout(() => {
+        //   window.location.href = 'https://example.com/selesai';
+        // }, 3000);
+
+        return
+      }
+
+      const minutes = Math.floor(timeLeft / (1000 * 60))
+      const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000)
+
+      document.getElementById('timer').textContent = `${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`
+    }
+
+    // Update timer setiap detik
+    setInterval(updateTimer, 1000)
+
+    // Jalankan sekali saat halaman dimuat
+    updateTimer();
+  </script>
+
+</body>
+
+</html>
